@@ -1,13 +1,14 @@
 import express from 'express'
 import mongoose from 'mongoose'
-import routeApi from './routes/api/api'
-import routePayments from './routes/api/payments'
-import routeUsers from './routes/api/users'
 import bodyParser from 'body-parser'
 import http from 'http'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
-import { config } from './config'
+import { config } from '@/config'
+import { setupLogging } from '@/utils/middleware'
+import { attachRouting, createConfig } from 'express-zod-api'
+import { logger } from '@utils/logger'
+import { zodRouting } from '@api/routing'
 
 const app = express()
 const server = http.createServer(app)
@@ -59,12 +60,22 @@ app.use((req, res, next) => {
   }
 })
 
-/**
- * setup routers
- */
-app.use('/api', routeApi)
-routeApi.use('/payments', routePayments)
-routeApi.use('/users', routeUsers)
+setupLogging(app)
+
+const zodConfig = createConfig({
+  app: app,
+  inputSources: {
+    get: ['params', 'query'],
+    post: ['params', 'body', 'files'],
+    put: ['params', 'body', 'files'],
+    patch: ['params', 'body'],
+    delete: ['params', 'body', 'query'],
+  },
+  logger,
+  cors: false,
+  startupLogo: false,
+})
+attachRouting(zodConfig, zodRouting)
 
 /**
  * setup server

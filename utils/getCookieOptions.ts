@@ -8,7 +8,7 @@ export function getCookieOptions(expiry?: Date): CookieOptions {
     httpOnly: true,
     sameSite: 'none',
     path: '/',
-    secure: config.nodeEnv === 'production',
+    secure: config.nodeEnv === 'production', // false for safari dev
     expires: expiry ?? tokenExpiryDate,
     domain: config.domain,
   }

@@ -1,4 +1,13 @@
 import { Document, Types } from 'mongoose'
+import { z } from 'zod'
+
+export const AuthenticatedUser = z.object({
+  id: z.string(),
+  email: z.string(),
+  firstName: z.string(),
+  lastName: z.string(),
+})
+export type AuthenticatedUser = z.infer<typeof AuthenticatedUser>
 
 export interface IUser extends Document {
   email: string
