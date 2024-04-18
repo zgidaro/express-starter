@@ -19,11 +19,10 @@ const server = http.createServer(app)
 mongoose
   .connect(config.mongodb)
   .then(() => {
-    console.log('      DB Connection successful      ')
-    console.log('************************************')
+    logger.info('DB Connection successful')
   })
   .catch((error) => {
-    console.error('DB Connection failed', error)
+    logger.error('DB Connection failed', error)
   })
 
 app.use(bodyParser.json({ limit: '200mb' }))
@@ -81,5 +80,5 @@ attachRouting(zodConfig, zodRouting)
  * setup server
  */
 server.listen(config.port, () => {
-  console.log(`    Server started on port ${config.port}`)
+  logger.info(`Server started on port ${config.port}`)
 })

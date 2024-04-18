@@ -11,6 +11,7 @@ import jwt from 'jsonwebtoken'
 import createHttpError from 'http-errors'
 import { config } from '@/config'
 import { AuthenticatedUser } from '@/types'
+import { logger } from '@utils/logger'
 
 const determineAndSetResponseCode = ({
   request,
@@ -97,7 +98,7 @@ const allowLoginHandler = (request: Request) => {
       return { user }
     }
   } catch (error: any) {
-    console.warn(error)
+    logger.warn(error)
   }
   return {}
 }

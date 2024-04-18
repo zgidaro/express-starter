@@ -1,6 +1,7 @@
 import { S3 } from '@aws-sdk/client-s3'
 import { config } from '@/config'
 import { Readable } from 'stream'
+import { logger } from '@utils/logger'
 
 const s3 = new S3({
   region: config.aws.s3.region,
@@ -54,7 +55,7 @@ export const getMedia = async (mediaId: string): Promise<Buffer | null> => {
 
     return streamToBuffer(data.Body as Readable)
   } catch (error) {
-    console.error(error)
+    logger.error(error)
     throw error
   }
 }
@@ -68,7 +69,7 @@ export const deleteMedia = async (mediaId: string): Promise<void> => {
       Key: key,
     })
   } catch (error) {
-    console.error(error)
+    logger.error(error)
     throw error
   }
 }
